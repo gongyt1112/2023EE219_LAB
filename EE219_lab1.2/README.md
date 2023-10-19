@@ -1,4 +1,4 @@
-# EE219_Lab0 Numpy VIT for inference(MNIST)
+# EE219_Lab1.2 Numpy VIT for inference(MNIST)
 ## Introduction：
 
 In this lab, we will build an easy Vision Transformer(VIT) using numpy. Your job is to fill in the lines marked with "# TO DO" in Evaluate.py and layers.py. To test your program, run "Evaluate.py". It will automatically generate "xxx.csv" and the accuracy should be be close to the accuracy of the trained model if everything is good. 
