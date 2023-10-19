@@ -63,10 +63,10 @@ Do not import extra python package.
 
 ## Submission:
 
-Please compress `layers.py`, `Evaluate.py` and `xxx.csv` into a `zip` file with name `{StudentNumber_StudentName}_EE219_Lab0.zip`, and submit to Blackboard. The file structure should be like this.
+Please compress `layers.py`, `Evaluate.py` and `xxx.csv` into a `zip` file with name `{StudentNumber_StudentName}_EE219_Lab1_2.zip`, and submit to Blackboard. The file structure should be like this.
 
 ```
-12345678_张三_EE219_Lab0.zip
+12345678_张三_EE219_Lab1_2.zip
 |-- layers.py
 |-- Evaluate.py
 |-- model
