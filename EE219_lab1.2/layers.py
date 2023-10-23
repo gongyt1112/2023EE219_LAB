@@ -49,6 +49,7 @@ class flatten_layer():
     def forward(self, inputs):
         self.shape = inputs.shape
         # TO DO: 将输入数组展平，变为一维数组
+        # 该函数用于在Evaluate.py中区分是否使用cls_token
         # 可能用到的函数：np.stack
 
         return out
@@ -254,13 +255,14 @@ class Transformer_Encoder():
         # TO DO :补全Encoder的向前传播
         # 包括多头注意力部分：softmax(Q*K.T/sqrt(dmodel))*v
 
-        # 残差
+       
+
         rkk = np.stack(result)
         input1 = inputs + rkk
         self.out1 = self.norm1.forward(input1)
         # MLP
         self.out1 = self.fc0.forward(self.out1)
-        self.out2 = self.gelu.forward(self.out2)
+        self.out2 = self.gelu.forward(self.out1)
         self.out3 = self.fc1.forward(self.out2)
 
         outrek = self.out3 + input1

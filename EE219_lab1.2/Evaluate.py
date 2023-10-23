@@ -13,8 +13,10 @@ abspath = abspath.replace(filename, "")
 def VIT_model(num_classes,batchsize,embed_dim,n_patch,patchnorm,fixed,cls_token):
 
     images_shape = (batchsize, 1, 30-2, 30-2)
-
-    num_h = [2*2] * 6 #[3, 6, 12, 3, 6, 12]
+    
+    # 不需要修改
+    # num_h的六位分别对应六个Encoder的num_h,例如num_h[0]，可作为第一个Encoder的num_h参数
+    num_h = [2*2] * 6 
 
     if patchnorm:
         choose = "_pn"
