@@ -212,7 +212,7 @@ class Positional_Encoding():
         self.param_delta = np.zeros_like(self.param)
         self.fixed = fixed
         self.posk = np.zeros((1, n_patch**2, embed_dim))
-        # TO DO :计算位置编码
+        # TO DO :计算位置编码（使用正余弦）
 
     def forward(self, inputs):
         # TO DO ：位置编码层的前向传播，考虑是否固定（即fixed参数）
