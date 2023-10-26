@@ -33,7 +33,7 @@
 
 + ### Positional_encoding:
 
-  $$P \in R^{n \times d}: p_{i,2j} = sin(\frac{i}{10000^{2j/d}}),p_{i,2j+1} = sin(\frac{i}{10000^{2j/d}})$$ 
+  $$P \in R^{n \times d}: p_{i,2j} = sin(\frac{i}{10000^{2j/d}}),p_{i,2j+1} = cos(\frac{i}{10000^{2j/d}})$$ 
 
 + ### Layers：
 
