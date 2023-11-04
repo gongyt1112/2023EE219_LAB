@@ -43,7 +43,7 @@ QAT's backward process:
 
 The black line is our approximate value, the red line is real value. We can approximate that the gradient is 1 in the backward process if the quantized value is in the right range.
 
-$$\frac{\partial \hat X}{\partial x} = \begin{cases} 1, if \ 0 \leq x_{int} \leq 2^{BW}-1 \\
+$$\frac{\partial \hat X}{\partial x} = \begin{cases} 1, if \ -2^{BW-1} \leq x_{int} \leq 2^{BW-1}-1 \\
 0,otherwise\end{cases} $$
 
 
@@ -114,9 +114,9 @@ run code in main.ipynb file
 6. `main.ipynb` is file we run to see the lab's result.
 
 ## Submission
-Please compress all the file into a `zip` file with name {StudentNumber_StudentName}_EE219_Lab1_2.zip, and submit to Blackboard. The file structure should be like this.
+Please compress all the file into a `zip` file with name {StudentNumber_StudentName}_EE219_Lab2.zip, and submit to Blackboard. The file structure should be like this.
 ```
-12345678_张三_EE219_Lab1_2.zip
+12345678_张三_EE219_Lab2.zip
 |-- Data                  # save .npy file
 |-- mnist_data            # Mnist datasets
 |-- Quantmodel            # Folder of main lab
