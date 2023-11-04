@@ -16,10 +16,10 @@ We can store these data in training process. After training, PTQ directly proces
 The implementation of PTQ is simple, while the accuracy reduction introduced by quantizatiopn process is 
 generally acceptable.
 
-PTQ quantization formula (unsigned):
+PTQ quantization formula (signed):
 
 
- $$X = \hat X \approx S_x(x_{int}) = clamp[ round(\frac{x}{S_x}); 0, 2^{BW}-1 ] $$
+ $$X = \hat X \approx S_x(x_{int}) = clamp[ round(\frac{x}{S_x}); -2^{BW-1} , 2^{BW-1}-1 ] $$
 ## Quantization-Aware Training (QAT)
 PTQ is straightforward to implement and doesn't require the extensive retraining，but it has limitations when aiming for low-bit quantization (e.g. 4-bit).
 
