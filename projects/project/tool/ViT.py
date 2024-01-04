@@ -111,13 +111,14 @@ class FakeSoftmax():
         return result
 
 class Linear():
-    def __init__(self, weight_size, bias_size, output_width=8, input_width=8, weight_width=8, bias_width=16):
+    def __init__(self, weight_size, bias_size, output_width=8, input_width=8, weight_width=8, bias_width=16, round_width=8):
         self.weight_size = weight_size
         self.bias_size = bias_size
         self.output_width = output_width
         self.input_width = input_width
         self.weight_width = weight_width
         self.bias_width = bias_width
+        self.round_width = round_width
 
     def __call__(self, x):
         return self.forward( x )
@@ -128,14 +129,15 @@ class Linear():
     
     def forward( self, x ):
         result = np.matmul( x, self.weight ) + self.bias 
-        result_shift = RoundShift( result, ( self.bias_width+1-self.output_width ) )
+        result_shift = RoundShift( result, self.round_width )
         result_clamp = np.clip( result_shift, -2**(self.output_width-1), 2**(self.output_width-1)-1 )
         return result_clamp 
 
 class MatMul(  ):
-    def __init__(self, output_width=8, input_width=8):
+    def __init__(self, output_width=8, input_width=8, en_round=True ):
         self.output_width = output_width
         self.input_width = input_width
+        self.en_round = en_round
 
     def __call__(self, x, y):
         return self.forward( x, y )
@@ -143,7 +145,10 @@ class MatMul(  ):
     def forward( self, x, y ):
         result = np.matmul( x, y )
         result = result.astype(np.int32)
-        result_shift = RoundShift( result, ( self.input_width*2-self.output_width ) )
+        if self.en_round:
+            result_shift = RoundShift( result, ( self.input_width*2-self.output_width ) )
+        else:
+            result_shift = result
         result_clamp = np.clip( result_shift, -2**(self.output_width-1), 2**(self.output_width-1)-1 )
         return result_clamp 
 
@@ -152,12 +157,18 @@ class QKVCore():
         self.config = config
         self.__dict__.update( config.__dict__ )
         
-        self.proj_q = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, output_width=8, input_width=8, weight_width=8, bias_width=8 )
-        self.proj_k = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, output_width=8, input_width=8, weight_width=8, bias_width=8 )
-        self.proj_v = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, output_width=8, input_width=8, weight_width=8, bias_width=8 )
-        self.matmul_1 = MatMul(  )
+        self.proj_q = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, 
+                             output_width=8, input_width=8, weight_width=8, bias_width=8, round_width=( 8 ) )
+        
+        self.proj_k = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, 
+                             output_width=8, input_width=8, weight_width=8, bias_width=8, round_width=( 8 ) )
+        
+        self.proj_v = Linear( weight_size=(self.embed_dim, self.embed_dim), bias_size=self.feature_size, 
+                             output_width=8, input_width=8, weight_width=8, bias_width=8, round_width=( 8 ) )
+        
+        self.matmul_1 = MatMul( en_round=True )
         self.softmax = FakeSoftmax(  )
-        self.matmul_2 = MatMul(  )
+        self.matmul_2 = MatMul( en_round=False )
         
         self.initialize()
 
